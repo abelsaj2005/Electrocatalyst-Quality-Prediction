@@ -1,6 +1,6 @@
 # DATA 522 - Homework 1: Electrocatalyst Quality Prediction
 **Student:** Abel Saj
-**Date:** February 2, 2026
+**Date:** February 4, 2026
 
 ---
 
@@ -18,15 +18,14 @@ This project aims to predict the quality of electrocatalysts based on their over
 
 ## 2. Dataset Description
 
-**Data Source:** ExerciseData.csv  
-**Total Samples:** 500 experiments  
-**Features (11):** V, Cr, Mg, Fe, Co, Ni, Cu, S, Se, P, Voltage, Time  
+**Data Source:** ExerciseData.csv
+**Total Samples:** 500 experiments
+**Features (11):** V, Cr, Mg, Fe, Co, Ni, Cu, S, Se, P, Voltage, Time
 **Target Variable:** Overpotential η at 50.0 mA/cm²  
 
 **Data Characteristics:**
 - Overpotential range: -1.0047 to -0.2427 V (all negative values, as expected)
 - Mean η: -0.6431 V, Standard deviation: 0.1606 V
-- Class distribution: Good catalysts (|η| < 0.6): [TBD]%, Bad catalysts (|η| ≥ 0.6): [TBD]%
 
 ---
 
@@ -68,10 +67,10 @@ Implemented stratified 70-15-15 train-validation-test split to maintain class pr
 
 ### 3.3 Task 1.3: Class Distribution Analysis
 
-Calculated and visualized the percentage of good vs. bad catalysts in the dataset:
-- Good catalysts (|η| < 0.6): [TBD] samples ([TBD]%)
-- Bad catalysts (|η| ≥ 0.6): [TBD] samples ([TBD]%)
-- **Implication:** [Class balance/imbalance affects model training and evaluation metrics]
+Calculated the percentage of good vs. bad catalysts in the dataset:
+- Good catalysts (|η| < 0.6): 165 samples (33.00%)
+- Bad catalysts (|η| ≥ 0.6): 335 samples (67.00%)
+- **Implication:** The dataset exhibits moderate class imbalance with twice as many "bad" catalysts. This 67-33 split affects model evaluation, making metrics like F1 score more informative than simple accuracy.
 
 ### 3.4 Task 1.4: Baseline Random Forest Model
 
@@ -80,9 +79,9 @@ Trained a Random Forest classifier with default scikit-learn parameters:
 - Evaluation metrics: Precision, Recall, F1 Score on train/validation/test sets
 
 **Results:**
-- Training Precision: [TBD], Recall: [TBD], F1: [TBD]
-- Validation Precision: [TBD], Recall: [TBD], F1: [TBD]
-- Test Precision: [TBD], Recall: [TBD], F1: [TBD]
+- Training Precision: 1.0000, Recall: 1.0000, F1: 1.0000
+- Validation Precision: 0.6667, Recall: 0.4800, F1: 0.5581
+- Test Precision: 0.7059, Recall: 0.5000, F1: 0.5854
 
 ### 3.5 Task 1.5: Hyperparameter Tuning
 
@@ -90,39 +89,38 @@ Tested 5 hyperparameter combinations to optimize model performance:
 
 | Combo | n_estimators | max_depth | min_samples_split | min_samples_leaf | Val F1 | Test F1 |
 |-------|--------------|-----------|-------------------|------------------|--------|---------|
-| 1     | 50           | 10        | 2                 | 1                | [TBD]  | [TBD]   |
-| 2     | 100          | 20        | 5                 | 2                | [TBD]  | [TBD]   |
-| 3     | 200          | None      | 10                | 4                | [TBD]  | [TBD]   |
-| 4     | 150          | 15        | 2                 | 1                | [TBD]  | [TBD]   |
-| 5     | 300          | 25        | 5                 | 2                | [TBD]  | [TBD]   |
+| 1     | 50           | 10        | 2                 | 1                | 0.5581 | 0.6190  |
+| 2     | 100          | 20        | 5                 | 2                | 0.5652 | 0.5854  |
+| 3     | 200          | None      | 10                | 4                | 0.5455 | 0.6190  |
+| 4     | 150          | 15        | 2                 | 1                | 0.5238 | 0.5854  |
+| 5     | 300          | 25        | 5                 | 2                | 0.5238 | 0.5854  |
 
 **Best Configuration (based on validation F1):**
-- Combination [TBD]: n_estimators=[TBD], max_depth=[TBD], min_samples_split=[TBD], min_samples_leaf=[TBD]
-- Test Performance: Precision=[TBD], Recall=[TBD], F1=[TBD]
-
-### 3.6 Task 1.6: Permutation Feature Importance
+- Combination 2: n_estimators=100, max_depth=20, min_samples_split=5, min_samples_leaf=2
+- Validation Performance: Precision=0.6667, Recall=0.5200, F1=0.5652
+- Test Performance: Precision=0.7059, Recall=0.5000, F1=0.5854
 
 Analyzed feature importance using PFI with and without input normalization (30 repetitions):
 
 **Without Normalization:**
-1. [Feature 1]: [Importance] ± [Std]
-2. [Feature 2]: [Importance] ± [Std]
-3. [Feature 3]: [Importance] ± [Std]
-4. [Feature 4]: [Importance] ± [Std]
-5. [Feature 5]: [Importance] ± [Std]
+1. Co: 0.2107 ± 0.0788
+2. Se: 0.1001 ± 0.0797
+3. Ni: 0.0595 ± 0.0422
+4. V: 0.0485 ± 0.0618
+5. Mg: 0.0460 ± 0.0279
 
 **With Normalization:**
-1. [Feature 1]: [Importance] ± [Std]
-2. [Feature 2]: [Importance] ± [Std]
-3. [Feature 3]: [Importance] ± [Std]
-4. [Feature 4]: [Importance] ± [Std]
-5. [Feature 5]: [Importance] ± [Std]
+1. Co: 0.2110 ± 0.0791
+2. Se: 0.1184 ± 0.0760
+3. Ni: 0.0777 ± 0.0528
+4. V: 0.0485 ± 0.0618
+5. Mg: 0.0443 ± 0.0262
 
 **Analysis of Normalization Impact:**
 - Random Forest is inherently scale-invariant due to tree-based splitting
 - Expected: Minimal ranking changes between normalized and non-normalized
-- Observed: [Describe actual differences/similarities in rankings]
-- [Any unexpected findings and their explanations]
+- Observed: Rankings are identical for the top 5 features (Co, Se, Ni, V, Mg) in both approaches, with nearly identical importance values
+- This confirms Random Forest's scale-invariance property - feature importance depends on information gain from splits, not absolute feature magnitudes
 
 ---
 
@@ -130,71 +128,38 @@ Analyzed feature importance using PFI with and without input normalization (30 r
 
 ### Model Performance Summary
 
-The optimized Random Forest model achieved strong performance in classifying electrocatalyst quality:
-- **Test F1 Score:** [TBD] (indicating [excellent/good/fair] balance of precision and recall)
-- **Key Strength:** [Describe whether model excels at precision or recall]
-- **Potential Limitation:** [Discuss any observed weaknesses from confusion matrix]
+The optimized Random Forest model achieved moderate performance in classifying electrocatalyst quality:
+- **Test F1 Score:** 0.5854 (indicating room for improvement but reasonable performance given class imbalance)
+- **Key Strength:** The model excels at precision (0.7059), meaning when it predicts a "good" catalyst, it's correct ~71% of the time
+- **Potential Limitation:** Recall is relatively low (0.50), meaning the model only identifies half of the truly good catalysts, suggesting conservative classification behavior
 
 ### Feature Importance Insights
 
 The PFI analysis revealed:
-1. **Most Critical Features:** [Top features] have the strongest impact on catalyst quality prediction
-2. **Comparison with Correlation:** [Discuss whether PFI rankings align with correlation analysis from Task 1.1]
-3. **Chemical Interpretation:** [If known, discuss why these features might be important for catalyst performance]
-4. **Normalization Effect:** [Discuss observed differences and why they occurred or didn't occur]
+1. **Most Critical Features:** Co (0.21), Se (0.10-0.12), and Ni (0.06-0.08) have the strongest impact on catalyst quality prediction
+2. **Comparison with Correlation:** PFI rankings align well with correlation analysis - Co (-0.393) and Se (+0.352) were the top two correlated features in Task 1.1
+3. **Chemical Interpretation:** Cobalt (Co), selenium (Se), and nickel (Ni) are known electrocatalyst components. Co and Ni are transition metals with variable oxidation states enabling redox reactions, while Se can influence electronic structure
+4. **Normalization Effect:** Identical top-5 rankings confirm Random Forest's inherent scale-invariance, validating that feature importance derives from information gain, not feature magnitude
 
 ### Model Interpretability
 
 The combination of PCA visualization and feature importance provides complementary insights:
-- **PCA:** Shows data structure is truly high-dimensional with no simple linear projections
-- **PFI:** Identifies which features drive predictions in the non-linear Random Forest model
-- **Alignment:** [Discuss whether important features from PFI correspond to features with high variance in PCA]
+- **PCA:** Shows data structure is truly high-dimensional with no simple linear projections (only 35% variance in 3 components)
+- **PFI:** Identifies Co, Se, and Ni as the features that most strongly drive predictions in the non-linear Random Forest model
+- **Alignment:** PFI's important features (Co, Se, Ni, V) overlap with the highly correlated features identified in Task 1.1, confirming both linear and non-linear importance
 
 ---
 
 ## 5. Conclusions
 
-1. **Data Characteristics:** The electrocatalyst dataset exhibits complex, high-dimensional patterns with [class balance/imbalance status]. PCA's low explained variance (35% in 3D) confirms no dominant linear structure exists.
+1. **Data Characteristics:** The electrocatalyst dataset exhibits complex, high-dimensional patterns with moderate class imbalance (67% bad, 33% good catalysts). PCA's low explained variance (35% in 3D) confirms no dominant linear structure exists.
 
 2. **Model Selection:** Random Forest proved appropriate for this problem due to:
    - Ability to capture non-linear relationships
-   - Robustness to feature scaling
+   - Robustness to feature scaling (confirmed via normalization study)
    - Natural handling of feature interactions
-   - Strong performance: [Final test F1 score]
+   - Reasonable performance: Test F1 score of 0.5854 with high precision (0.71)
 
-3. **Key Predictive Features:** [List top 3-5 features] emerged as most important for predicting catalyst quality, with [discuss any surprising findings or confirmations of chemical intuition].
+3. **Key Predictive Features:** Cobalt (Co), Selenium (Se), and Nickel (Ni) emerged as the three most important features for predicting catalyst quality. This aligns with chemical intuition - these are known transition metals and chalcogens critical for electrocatalytic activity. The fact that V and Mg round out the top 5 suggests compositional balance is key.
 
-4. **Practical Implications:** The model can reliably predict catalyst quality from experimental parameters, potentially reducing the need for expensive electrochemical testing. Features like [important features] should be prioritized in future catalyst design.
-
-5. **Future Work:** 
-   - Test ensemble methods (XGBoost, LightGBM) for potential improvement
-   - Explore feature engineering (interaction terms, polynomial features)
-   - Investigate SHAP values for more detailed feature contribution analysis
-   - Collect more data to improve model robustness
-
----
-
-## 6. Technical Appendix
-
-**Software Environment:**
-- Python 3.12.4
-- Libraries: scikit-learn, pandas, numpy, matplotlib, seaborn
-- Random seed: 42 (all random operations)
-
-**Code Repository:** homework1_analysis.ipynb
-
-**Figures Generated:**
-- Figure 1: Overpotential distribution histograms
-- Figure 2: Feature correlation heatmap
-- Figure 3: Pairwise scatter plots (top 5 features)
-- Figure 4: 2D PCA projection (colored by |η| and quality)
-- Figure 5: 3D PCA projection
-- Figure 6: Class distribution bar chart
-- Figure 7: Default RF performance metrics
-- Figure 8: Confusion matrix (test set)
-- Figure 9: Hyperparameter tuning comparison
-- Figure 10: PFI comparison (normalized vs. non-normalized)
-
----
-
-**Total Word Count:** ~1,400 words (approximately 2 pages)
+4. **Practical Implications:** The model can predict catalyst quality with 71% precision from experimental parameters, potentially reducing the need for expensive electrochemical testing. Features like Co, Se, and Ni concentrations should be prioritized in future catalyst design and optimization efforts.
