@@ -155,18 +155,8 @@ This project demonstrates:
 - [ ] Perform threshold optimization for precision-recall balance
 - [ ] Deploy model as REST API for real-time predictions
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## 👤 Author
 
 **Abel Saj**
 - GitHub: [@abelsaj](https://github.com/abelsaj)
 - LinkedIn: [Connect with me](https://linkedin.com/in/abelsaj)
-
----
-
-⭐ **If you found this project interesting, please consider giving it a star!**
-
-*Built as part of DATA 522: Data Science & Machine Learning coursework*
